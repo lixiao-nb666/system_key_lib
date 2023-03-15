@@ -15,6 +15,8 @@ import android.view.View;
 
 import com.newbee.system_key.util.ActivityKeyDownListUtil;
 import com.newbee.system_key.util.KeyCodesEventType;
+import com.newbee.system_key_lib.system_key_input.SystemKeyCodeInput;
+import com.newbee.system_key_lib.system_key_input.SystemKeyCodeInputListen;
 import com.newbee.system_key_lib.systemkey.SystemKeyEvent;
 import com.newbee.system_key_lib.systemkey.SystemKeyEventListen;
 
@@ -24,6 +26,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     protected SystemKeyEvent keyEventUtil = new SystemKeyEvent();
+    private SystemKeyCodeInput keyCodeInput=new SystemKeyCodeInput();
+    private SystemKeyCodeInputListen keyCodeInputListen=new SystemKeyCodeInputListen() {
+        @Override
+        public void inputOk(int code) {
+
+        }
+
+        @Override
+        public void inputErr(int code, String errStr) {
+
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +48,21 @@ public class MainActivity extends AppCompatActivity {
         keyEventUtil.setKeyCodesToDoEvent(KeyCodesEventType.QUE.ordinal(), ActivityKeyDownListUtil.queOk2());
         keyEventUtil.setKeyCodesToDoEvent(KeyCodesEventType.BACK.ordinal(), ActivityKeyDownListUtil.toBackList());
         keyEventUtil.start();
+        keyCodeInput.setListen(keyCodeInputListen);
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        keyEventUtil.pause();
+    }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        keyEventUtil.close();
+    }
 
     private final String tag="test_system_key";
 
@@ -46,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void nowCanDoEvent(int eventTypeInt) {
             KeyCodesEventType eventType=KeyCodesEventType.values()[eventTypeInt];
-            Log.i(tag,"kankannowCanDoEvent:"+eventType);
             switch (eventType) {
                 case NONE:
                     break;
