@@ -45,7 +45,7 @@ public class SystemKeyEvent {
 
 
 
-    private final String tag = getClass().getName() + ">>>>";
+
 
     public boolean nowClickKeyCode(KeyEvent keyEvent) {
 
@@ -58,14 +58,30 @@ public class SystemKeyEvent {
             //如果还没初始化开始时间，或者当前时间比开始时间小于1秒直接返回过滤掉事件
             return false;
         }
+        switch (lastCode){
 
-        if (keyEvent.getAction() != KeyEvent.ACTION_DOWN||keyEvent.getAction() != KeyEvent.ACTION_UP) {
-            //不是KEYDOWN事件，直接不做处理
-            return false;
+
+            case KeyEvent.ACTION_DOWN:
+                if(keyEvent.getAction() !=KeyEvent.ACTION_DOWN){
+                    return false;
+                }
+                break;
+            case -1:
+            case KeyEvent.ACTION_UP:
+                if(keyEvent.getAction()==KeyEvent.ACTION_DOWN||keyEvent.getAction()==KeyEvent.ACTION_UP){
+                    //是按上或者按下，都能接受，后续处理逻辑
+                }else {
+                    return false;
+                }
+                break;
         }
+
+
+
         int nowKeyCode = keyEvent.getKeyCode();
         long nowEventTime=keyEvent.getEventTime();
         if(nowKeyCode==lastCode&&nowEventTime==lastEventTime){
+            //此处处理重复事件
             return false;
         }
         lastCode=nowKeyCode;
