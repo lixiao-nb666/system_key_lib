@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_launcher);
         keyEventUtil.setListen(keyEventListen);
         keyEventUtil.setKeyCodesToDoEvent(KeyCodesEventType.LEFT.ordinal(), ActivityKeyDownListUtil.toLeftList());
         keyEventUtil.setKeyCodesToDoEvent(KeyCodesEventType.RIGHT.ordinal(), ActivityKeyDownListUtil.toRightList());
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         keyEventUtil.setKeyCodesToDoEvent(KeyCodesEventType.BACK.ordinal(), ActivityKeyDownListUtil.toBackList());
         keyEventUtil.start();
         keyCodeInput.setListen(keyCodeInputListen);
-
+        Log.i("kankan","kankanfanhuijici:111---------------");
     }
 
     @Override
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private SystemKeyEventListen keyEventListen = new SystemKeyEventListen() {
         @Override
         public void nowCanDoEvent(int eventTypeInt) {
+            Log.i("kankan","kankanfanhuijici:111");
             KeyCodesEventType eventType=KeyCodesEventType.values()[eventTypeInt];
             switch (eventType) {
                 case NONE:
@@ -105,9 +107,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (keyEventUtil == null || event == null){
-            return false;
-        }
         if (keyEventUtil.nowClickKeyCode(event)) {
             return true;
         }

@@ -59,7 +59,7 @@ public class SystemKeyEvent {
             return false;
         }
 
-        if (keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
+        if (keyEvent.getAction() != KeyEvent.ACTION_DOWN||keyEvent.getAction() != KeyEvent.ACTION_UP) {
             //不是KEYDOWN事件，直接不做处理
             return false;
         }

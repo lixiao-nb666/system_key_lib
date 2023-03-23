@@ -65,8 +65,6 @@ class KeyCodesEventUtil {
         nowDownKeyCodeStr.append(keyCode + connectStr);
         ResultKeyCodeSEventBean keyCodesStrsBean = strsBeanMap.get(keyCode);
         return check(keyCodesStrsBean);
-
-
     }
 
 
