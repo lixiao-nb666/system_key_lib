@@ -15,10 +15,14 @@ public class SystemKeyEvent {
     private long lastEventTime=-1;
     private KeyCodesEventUtil keyCodesEventUtil;
 
-
+    private long startTime;
+    private final long mustChaTime=300;
     public void start() {
         canStart=true;
-
+        /**
+         * 必须做这个，有时候有些引擎还没优化成功
+         */
+        startTime=System.currentTimeMillis();
     }
 
     public void pause() {
@@ -42,11 +46,6 @@ public class SystemKeyEvent {
         keyCodesEventUtil.setKeyCodesToDoEvent(eventType, keyCodes);
     }
 
-
-
-
-
-
     public boolean nowClickKeyCode(KeyEvent keyEvent) {
 
         if (keyCodesEventUtil == null) {
@@ -54,10 +53,12 @@ public class SystemKeyEvent {
             return false;
         }
 
-        if (!canStart) {
+        if (!canStart||System.currentTimeMillis()-startTime<mustChaTime) {
             //如果还没初始化开始时间，或者当前时间比开始时间小于1秒直接返回过滤掉事件
             return false;
         }
+
+
 
         if(lastCode==-1){
             //第一次的话什么事件都不拦截
@@ -68,12 +69,9 @@ public class SystemKeyEvent {
             }
         }
 
-
-
-
-
-        int nowKeyCode = keyEvent.getKeyCode();
         long nowEventTime=keyEvent.getEventTime();
+        int nowKeyCode = keyEvent.getKeyCode();
+
         if(nowKeyCode==lastCode&&nowEventTime==lastEventTime){
             //此处处理重复事件
             return false;
